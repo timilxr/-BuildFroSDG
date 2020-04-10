@@ -24,16 +24,17 @@ const covid19ImpactEstimator = (data) => {
   severeImpact.hospitalBedsByRequestedTime = Math.ceil(beds - severeCases);
 
   const severeImpactInfections = severeImpact.infectionsByRequestedTime;
-  impact.casesForICUByRequestedTime = 0.05 * impact.infectionsByRequestedTime;
-  severeImpact.casesForICUByRequestedTime = 0.05 * severeImpactInfections;
+  impact.casesForICUByRequestedTime = Math.ceil(0.05 * impact.infectionsByRequestedTime);
+  severeImpact.casesForICUByRequestedTime = Math.ceil(0.05 * severeImpactInfections);
 
-  impact.casesForVentilatorsByRequestedTime = 0.02 * impact.infectionsByRequestedTime;
-  severeImpact.casesForVentilatorsByRequestedTime = 0.02 * severeImpactInfections;
+  impact.casesForVentilatorsByRequestedTime = Math.ceil(0.02 * impact.infectionsByRequestedTime);
+  severeImpact.casesForVentilatorsByRequestedTime = Math.ceil(0.02 * severeImpactInfections);
 
   const severeInfectionsByRequestedTime = severeImpact.infectionsByRequestedTime;
   // eslint-disable-next-line max-len
-  impact.dollarsInFlight = impact.infectionsByRequestedTime * income * population * days;
-  severeImpact.dollarsInFlight = severeInfectionsByRequestedTime * income * population * days;
+  impact.dollarsInFlight = Math.ceil(impact.infectionsByRequestedTime * income * population * days);
+  const sol = Math.ceil(severeInfectionsByRequestedTime * income * population * days);
+  severeImpact.dollarsInFlight = sol;
   return {
     data,
     impact,
