@@ -32,8 +32,8 @@ const covid19ImpactEstimator = (data) => {
 
   const severeInfectionsByRequestedTime = severeImpact.infectionsByRequestedTime;
   // eslint-disable-next-line max-len
-  impact.dollarsInFlight = Math.floor(impact.infectionsByRequestedTime * income * population * days);
-  const sol = Math.floor(severeInfectionsByRequestedTime * income * population * days);
+  impact.dollarsInFlight = Math.floor((impact.infectionsByRequestedTime * income * population) / days);
+  const sol = Math.floor((severeInfectionsByRequestedTime * income * population) / days);
   severeImpact.dollarsInFlight = sol;
   return {
     data,
