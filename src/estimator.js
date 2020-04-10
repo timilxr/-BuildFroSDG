@@ -1,7 +1,7 @@
 const covid19ImpactEstimator = (data) => {
   const impact = {};
   const severeImpact = {};
-  const beds = Math.trunc(0.35 * data.totalHospitalBeds);
+  const beds = 0.35 * data.totalHospitalBeds;
   const income = data.region.avgDailyIncomeInUSD;
   const population = data.region.avgDailyIncomePopulation;
   if (data.periodType === 'weeks') {
@@ -18,21 +18,21 @@ const covid19ImpactEstimator = (data) => {
   impact.severeCasesByRequestedTime = 0.15 * impact.infectionsByRequestedTime;
   severeImpact.severeCasesByRequestedTime = 0.15 * severeImpact.infectionsByRequestedTime;
 
-  const impactCases = Math.trunc(impact.severeCasesByRequestedTime);
-  const severeCases = Math.trunc(severeImpact.severeCasesByRequestedTime);
-  impact.hospitalBedsByRequestedTime = Math.trunc(beds - impactCases);
-  severeImpact.hospitalBedsByRequestedTime = Math.trunc(beds - severeCases);
+  const impactCases = impact.severeCasesByRequestedTime;
+  const severeCases = severeImpact.severeCasesByRequestedTime;
+  impact.hospitalBedsByRequestedTime = Math.floor(beds - impactCases);
+  severeImpact.hospitalBedsByRequestedTime = Math.floor(beds - severeCases);
 
-  const severeImpactInfections = Math.trunc(severeImpact.infectionsByRequestedTime);
-  impact.casesForICUByRequestedTime = Math.trunc(0.05 * impact.infectionsByRequestedTime);
-  severeImpact.casesForICUByRequestedTime = Math.trunc(0.05 * severeImpactInfections);
+  const severeImpactInfections = severeImpact.infectionsByRequestedTime;
+  impact.casesForICUByRequestedTime = 0.05 * impact.infectionsByRequestedTime;
+  severeImpact.casesForICUByRequestedTime = 0.05 * severeImpactInfections;
 
-  impact.casesForVentilatorsByRequestedTime = Math.trunc(0.02 * impact.infectionsByRequestedTime);
-  severeImpact.casesForVentilatorsByRequestedTime = Math.floor(0.02 * severeImpactInfections);
+  impact.casesForVentilatorsByRequestedTime = 0.02 * impact.infectionsByRequestedTime;
+  severeImpact.casesForVentilatorsByRequestedTime = 0.02 * severeImpactInfections;
 
   const severeInfectionsByRequestedTime = severeImpact.infectionsByRequestedTime;
   // eslint-disable-next-line max-len
-  impact.dollarsInFlight = Math.trunc(impact.infectionsByRequestedTime * income * population * days);
+  impact.dollarsInFlight = impact.infectionsByRequestedTime * income * population * days;
   severeImpact.dollarsInFlight = severeInfectionsByRequestedTime * income * population * days;
   return {
     data,
